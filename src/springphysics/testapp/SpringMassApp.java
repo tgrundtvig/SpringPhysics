@@ -79,7 +79,7 @@ public class SpringMassApp implements App2D, MouseListener, KeyboardListener
         worldToScreen = g2d.combine(UnitToScreen, worldToUnit);
         screenToWorld = g2d.inverse(worldToScreen);
         //Create the world
-        world = new World(g2d);
+        world = new World(g2d, 0.5f, 0.5f, worldWidth - 0.5f);
         isRunning = false;
         selected = null;
         endA = null;

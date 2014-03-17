@@ -15,7 +15,9 @@ import springphysics.general.impl.PhysicsSimulatorImpl;
 import springphysics.springsystem.Air;
 import springphysics.springsystem.Gravity;
 import springphysics.springsystem.Ground;
+import springphysics.springsystem.LeftWall;
 import springphysics.springsystem.MassPoint;
+import springphysics.springsystem.RightWall;
 import springphysics.springsystem.Spring;
 
 /**
@@ -30,8 +32,7 @@ public class World
     private static final float SPRING_DAMPING = 100.0f;
     private static final float SPRING_TOLERANCE = 0.3f;
     private static final float GROUND_SPRING_CONSTANT = 1500.0f;
-    private static final float GROUND_SPRING_DAMPING = 10.0f;
-    private static final float GROUND_HEIGHT = 1.0f;
+    private static final float GROUND_SPRING_DAMPING = 5.0f;
     private static final float GRAVITY = -9.82f;
     
     private final G2D g2d;
@@ -39,14 +40,16 @@ public class World
     private final ArrayList<MassPoint> allPoints;
     private final ArrayList<Spring> allSprings;
 
-    public World(G2D g2d)
+    public World(G2D g2d, float ground, float left, float right)
     {
         this.g2d = g2d;
         allPoints = new ArrayList<>();
         allSprings = new ArrayList<>();
         sim = new PhysicsSimulatorImpl();
         sim.addForceGenerator(new Gravity(allPoints, g2d.newVector2D(0, GRAVITY)));
-        sim.addForceGenerator(new Ground(g2d, allPoints, GROUND_SPRING_CONSTANT, GROUND_SPRING_DAMPING, GROUND_HEIGHT));
+        sim.addForceGenerator(new Ground(g2d, allPoints, GROUND_SPRING_CONSTANT, GROUND_SPRING_DAMPING, ground));
+        sim.addForceGenerator(new LeftWall(g2d, allPoints, GROUND_SPRING_CONSTANT, GROUND_SPRING_DAMPING, left));
+        sim.addForceGenerator(new RightWall(g2d, allPoints, GROUND_SPRING_CONSTANT, GROUND_SPRING_DAMPING, right));
         sim.addForceGenerator(new Air(g2d, allPoints));
     }
     
